@@ -1,72 +1,94 @@
-// --------------------------------------------------
-// S E T T I N G S
-// --------------------------------------------------
-
-
-// :: Colours
-// ------------------------------------------------------------
-
-$black								: rgb(0, 0, 0);
-$white								: rgb(255,255,255);
-$gray-1								: rgb(50, 50, 50);
-$gray-2								: rgb(100,100,100);
-$gray-3								: rgb(122,122,122);
-$gray-4								: rgb(200, 200, 200);
+// -----------------------------------------------------------------------------
 //
-$background-color					: $white;
-$body-color 							: $gray-1;
-$action								: $gray-2;
-$highlight-color 					: rgb(240,240,240);
-$rule-color							: $gray-3;
+// # S E T T I N G S
+//
+// -----------------------------------------------------------------------------
 
 
-
-// :: Fonts
-// ------------------------------------------------------------
 
 
 
 // :: Breakpoints
-// ------------------------------------------------------------
-
-$a-vp								: 950px;
-$b-vp								: 750px;
-$c-vp								: 500px;
-
-$max-vp 								: 1300px;
+// -----------------------------------------------------------------------------
 
 
-// :: Media Queries Mixin
-// -------------------------------------------------------
+$breakpoints: (
+	limit			: 1500,
+	1000				: 1000,
+	800				: 800,
+	600				: 600,
+
+);
 
 
-@mixin mq($dimensions-name) {
-  @if $dimensions-name == max {
-    @media only screen and (min-width: $max-vp)	{ @content; }
-  }
-  @else if $dimensions-name == a {
-    @media only screen and (max-width: $a-vp)	{ @content; }
-  }
-  @else if $dimensions-name == b {
-    @media only screen and (max-width: $b-vp)	{ @content; }
-  }
-  @else if $dimensions-name == c {
-    @media only screen and (max-width: $c-vp)	{ @content; }
-  }
+
+
+
+// :: Grids
+// -----------------------------------------------------------------------------
+
+
+$grid_1: (
+	name				:'grid_1',
+	columns			: 6,
+	gutter-unit		: '%',
+	gutter-width		: 4,
+	layout			: 'inside',
+	min				: 1000,
+	max				: 99999
+);
+
+$grid_2: (
+	name				:'grid_2',
+	columns			: 4,
+	gutter-unit		: 'px',
+	gutter-width		: 40,
+	layout			: 'outside',
+	min				: 0,
+	max				: 1000
+	
+);
+
+@include gridnik($grid_1);
+@include gridnik($grid_2);
+
+
+
+
+
+
+
+
+.container{
+	width: 100%;
+	@include mq(limit){
+		width: 500px;
+	}
+	@include mq(min, 1000){
+		width: 1000px;
+	}
+	@include mq(max, 600){
+		width: 50px;
+	}
+	@include mq(range, 800, 600){
+		width: 250px;
+	}
+	@include mq(print){
+		width: 500px;
+	}
+	@include mq(max-ratio, 1, 2){
+		background-color: pink;
+	}
+	@include mq(min-ratio, 1, 2){
+		background-color: blue;
+	}
 }
 
-@mixin mq-small{
-	@media only screen and (min-width: 0) and (max-width: $c-vp){@content;}
-}
-
-@mixin mq-medium{
-	@media only screen and (min-width: ($c-vp + 1)) and (max-width: $a-vp){@content;}
-}
-
-@mixin mq-medium-b{
-	@media only screen and (min-width: ($c-vp + 1)) and (max-width: $b-vp){@content;}
-}
-
-@mixin mq-large{
-	@media only screen and (min-width: ($a-vp + 1)) {@content;}
+.main{
+	width: 80%;
+	max-width: 1200px;
+	position: relative;
+	box-sizing: border-box;
+	@include clearfix;
+	margin: 0 auto;
 }

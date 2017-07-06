@@ -1,54 +1,99 @@
-// --------------------------------------------------
-// M I X I N S
-// --------------------------------------------------
+// -----------------------------------------------------------------------------
+//
+// # M I X I N S
+//
+// -----------------------------------------------------------------------------
 
 
-// :: Media Queries Mixin
-// -------------------------------------------------------
 
-@mixin mq($dimensions-name) {
-  @if $dimensions-name == max {
-    @media only screen and (min-width: $max-vp)	{ @content; }
-  }
-  @else if $dimensions-name == a {
-    @media only screen and (max-width: $a-vp)	{ @content; }
-  }
-  @else if $dimensions-name == b {
-    @media only screen and (max-width: $b-vp)	{ @content; }
-  }
-  @else if $dimensions-name == c {
-    @media only screen and (max-width: $c-vp)	{ @content; }
-  }
+
+
+// :: Media Queries Mixins
+// -----------------------------------------------------------------------------
+
+
+@mixin mq($type, $breakpoint:1, $range:1) {
+	
+	//Last Breakpoint
+	
+	@if $type == limit {
+		$limit: map-get($breakpoints, limit);
+		@media only screen and (min-width: $limit * 1px) { @content; }
+	}
+	
+	//Min Width
+	
+	@else if $type == min {
+		$min: map-get($breakpoints, $breakpoint);
+		@media only screen and (min-width: $min * 1px) { @content; }
+	}
+	
+	//Max Width
+	
+	@else if $type == max {
+		$max: map-get($breakpoints, $breakpoint);
+		@media only screen and (max-width: $max * 1px) { @content; }
+	}
+	
+	//Range
+	
+	@else if $type == range {
+		$range-max: map-get($breakpoints, $breakpoint);
+		$range-min: map-get($breakpoints, $range);
+		@media only screen and (max-width: $range-max * 1px) and (min-width: $range-min * 1px){ @content; }
+	}
+	
+	//Max Ratio
+	
+	@else if $type == max-ratio {
+		$value-1: $breakpoint; 
+		$value-2: $range;
+		@media screen and (max-aspect-ratio: #{$value-1}/#{$value-2}) { @content; }
+	}
+	
+	//Min Ratio
+	
+	@else if $type == min-ratio {
+		$value-1: $breakpoint; 
+		$value-2: $range;
+		@media screen and (min-aspect-ratio: #{$value-1}/#{$value-2}) { @content; }
+	}
+	
+	//Print
+	
+	@else if $type == print {
+		@media print { @content; }
+	}
+	
+	//Else
+	
+	@else{
+		@error "Specify a type of media query";
+	}
 }
 
-@mixin mq-small{
-	@media only screen and (min-width: 0) and (max-width: $c-vp){@content;}
-}
-
-@mixin mq-medium{
-	@media only screen and (min-width: ($c-vp + 1)) and (max-width: $a-vp){@content;}
-}
-
-@mixin mq-medium-b{
-	@media only screen and (min-width: ($c-vp + 1)) and (max-width: $b-vp){@content;}
-}
-
-@mixin mq-large{
-	@media only screen and (min-width: ($a-vp + 1)) {@content;}
-}
 
 
 
-// :: Random Mixins
-// ------------------------------------------------------------
+
+// :: Other Mixins
+// -----------------------------------------------------------------------------
+
 
 @mixin vertical-align {
-  position: relative;
-  top: 50%;
-  @include translateY(-50%);
+	position: relative;
+	top: 50%;
+	@include translateY(-50%);
 }
 
 @mixin background-cover {
-	background: no-repeat center center; 
+	background-repeat: no-repeat;
+	background-position: center center; 
 	@include background-size(cover);
+}
+
+@mixin background-contain{
+	background-repeat: no-repeat;
+	background-position: center center; 
+	@include background-size(contain);
 }

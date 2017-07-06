@@ -1,6 +1,5 @@
 require 'compass/import-once/activate'
-require 'susy'
-require 'breakpoint'
+
 
 http_path       		= "http://localhost:8888/wp-content/themes/theme/"
 css_dir         		= "/"
